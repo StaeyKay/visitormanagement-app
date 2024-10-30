@@ -1,5 +1,5 @@
-import { saveVisitors } from "@/utils";
-import React, { useState } from "react";
+import { getVisitors, saveVisitors } from "@/utils";
+import React, { useEffect, useState } from "react";
 
 const Checkin = () => {
   const [visitorName, setVisitorName] = useState("");
@@ -22,6 +22,7 @@ const Checkin = () => {
       console.log(visitorName);
       console.log(employeeName);
       console.log(time);
+      console.log("visitorData:", visitorData)
 
       const visitor = await saveVisitors(visitorData);
       resetForm();
@@ -35,6 +36,7 @@ const Checkin = () => {
     setEmployeeName("");
     setTime();
   };
+
   return (
     <div className="space-y-10">
       <h1 className="bg-[#E62E2D] text-center text-white py-4 font-bold text-[40px]">

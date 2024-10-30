@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Checkout = () => {
+  
+  const [visitorList, setVisitorList] = useState([]);
+
+  useEffect(() =>{
+    const fetchVisitors = async () => {
+      const visitorList = await getVisitors();
+      setVisitorList(visitorList);
+    };
+    fetchVisitors();
+  }, [visitorList])
+  
   return (
     <div>
       <table className="w-full text-center">

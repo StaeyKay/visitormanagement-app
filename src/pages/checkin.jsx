@@ -1,16 +1,33 @@
+import { saveVisitors } from "@/utils";
 import React, { useState } from "react";
 
 const Checkin = () => {
   const [visitorName, setVisitorName] = useState("");
   const [employeeName, setEmployeeName] = useState("");
   const [time, setTime] = useState();
+  const [phone, setPhone] = useState("");
+  const [purpose, setPurpose] = useState("");
 
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
-    console.log(visitorName);
-    console.log(employeeName);
-    console.log(time);
-    resetForm();
+
+    try {
+      const visitorData = {
+        visitorName: visitorName,
+        employeeName: employeeName,
+        phoneNumber: phone,
+        purposeOfVisit: purpose,
+        arrivalTime: time,
+      };
+      console.log(visitorName);
+      console.log(employeeName);
+      console.log(time);
+
+      const visitor = await saveVisitors(visitorData);
+      resetForm();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const resetForm = () => {
@@ -43,6 +60,16 @@ const Checkin = () => {
               value={visitorName}
             />
             <label htmlFor="" className="text-white">
+              Your phone number
+            </label>
+            <input
+              className="rounded-md h-8"
+              type="text"
+              placeholder="Enter your phone number"
+              onChange={(e) => setPhone(e.target.value)}
+              value={phone}
+            />
+            <label htmlFor="" className="text-white">
               Person to visit:
             </label>
             <input
@@ -53,6 +80,16 @@ const Checkin = () => {
               value={employeeName}
             />
             <label htmlFor="" className="text-white">
+              Purpose of visit
+            </label>
+            <input
+              className="rounded-md h-8"
+              type="text"
+              placeholder="Purpose"
+              onChange={(e) => setPurpose(e.target.value)}
+              value={purpose}
+            />
+            <label htmlFor="" className="text-white">
               Arrival time:
             </label>
             <input
@@ -61,7 +98,9 @@ const Checkin = () => {
               onChange={(e) => setTime(e.target.value)}
               value={time}
             />
-            <button className="bg-[#ffc0cbff] w-[100px]">Check In</button>
+            <button className="bg-[#ffc0cbff] w-[100px] rounded-md">
+              Check In
+            </button>
           </form>
         </div>
       </div>

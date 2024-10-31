@@ -22,7 +22,7 @@ const Checkin = () => {
       console.log(visitorName);
       console.log(employeeName);
       console.log(time);
-      console.log("visitorData:", visitorData)
+      console.log("visitorData:", visitorData);
 
       const visitor = await saveVisitors(visitorData);
       resetForm();
@@ -34,7 +34,9 @@ const Checkin = () => {
   const resetForm = () => {
     setVisitorName("");
     setEmployeeName("");
-    setTime();
+    setPhone("");
+    setPurpose("");
+    setTime("");
   };
 
   return (
@@ -60,6 +62,7 @@ const Checkin = () => {
               placeholder="Full Name"
               onChange={(e) => setVisitorName(e.target.value)}
               value={visitorName}
+              required
             />
             <label htmlFor="" className="text-white">
               Your phone number
@@ -70,6 +73,7 @@ const Checkin = () => {
               placeholder="Enter your phone number"
               onChange={(e) => setPhone(e.target.value)}
               value={phone}
+              required
             />
             <label htmlFor="" className="text-white">
               Person to visit:
@@ -80,6 +84,7 @@ const Checkin = () => {
               placeholder="Full Name"
               onChange={(e) => setEmployeeName(e.target.value)}
               value={employeeName}
+              required
             />
             <label htmlFor="" className="text-white">
               Purpose of visit

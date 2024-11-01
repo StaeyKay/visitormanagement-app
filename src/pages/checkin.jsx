@@ -1,5 +1,6 @@
 import { getVisitors, saveVisitors } from "@/utils";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Checkin = () => {
   const [visitorName, setVisitorName] = useState("");
@@ -7,6 +8,8 @@ const Checkin = () => {
   const [time, setTime] = useState();
   const [phone, setPhone] = useState("");
   const [purpose, setPurpose] = useState("");
+
+  const navigate = useNavigate();
 
   const handleForm = async (e) => {
     e.preventDefault();
@@ -26,6 +29,7 @@ const Checkin = () => {
 
       const visitor = await saveVisitors(visitorData);
       resetForm();
+      navigate("/checkout");
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +49,7 @@ const Checkin = () => {
         Welcome to Graphic Communications Group Limited
       </h1>
       <div className="p-10">
-        <div className="bg-[#E62E2D] p-10 rounded-xl space-y-4">
+        <div className="bg-[#dfa2a2] p-10 rounded-md space-y-4">
           <h4>Check-In Form</h4>
           <p className="text-white">Please fill in the form below</p>
           <form
@@ -57,7 +61,7 @@ const Checkin = () => {
               Your full name:
             </label>
             <input
-              className="rounded-md h-8"
+              className="rounded-md h-8 p-2"
               type="text"
               placeholder="Full Name"
               onChange={(e) => setVisitorName(e.target.value)}
@@ -68,7 +72,7 @@ const Checkin = () => {
               Your phone number
             </label>
             <input
-              className="rounded-md h-8"
+              className="rounded-md h-8 p-2"
               type="text"
               placeholder="Enter your phone number"
               onChange={(e) => setPhone(e.target.value)}
@@ -76,10 +80,10 @@ const Checkin = () => {
               required
             />
             <label htmlFor="" className="text-white">
-              Person to visit:
+              Host:
             </label>
             <input
-              className="rounded-md h-8"
+              className="rounded-md h-8 p-2"
               type="text"
               placeholder="Full Name"
               onChange={(e) => setEmployeeName(e.target.value)}
@@ -90,13 +94,13 @@ const Checkin = () => {
               Purpose of visit
             </label>
             <input
-              className="rounded-md h-8"
+              className="rounded-md h-8 p-2"
               type="text"
               placeholder="Purpose"
               onChange={(e) => setPurpose(e.target.value)}
               value={purpose}
             />
-            <label htmlFor="" className="text-white">
+            {/* <label htmlFor="" className="text-white">
               Arrival time:
             </label>
             <input
@@ -104,8 +108,11 @@ const Checkin = () => {
               type="datetime-local"
               onChange={(e) => setTime(e.target.value)}
               value={time}
-            />
-            <button className="bg-[#ffc0cbff] w-[100px] rounded-md">
+            /> */}
+            <button
+              // onClick={() => navigate("/checkout")}
+              className="bg-[#f1d5da] w-[100px] rounded-md"
+            >
               Check In
             </button>
           </form>

@@ -1,4 +1,4 @@
-import { getVisitors } from "@/utils";
+import { getVisitors, updateVisitor } from "@/utils";
 import React, { useState, useEffect } from "react";
 import {
   AlarmClock,
@@ -8,9 +8,23 @@ import {
   UsersRound,
 } from "lucide-react";
 import { FaSearch } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 
 const Checkout = () => {
+  const urlParams = useParams();
+
+  const visitorId = urlParams.visitorId;
+  const updateDepartureTime = Boolean(visitorId);
+
   const [visitorList, setVisitorList] = useState([]);
+  const [departureTime, setDepartureTime] = useState();
+
+  const handleCheckout = async (e) => {
+    if (updateDepartureTime) {
+      const updatedCheckout = await updateVisitor(visitorId);
+      setDepartureTime(updatedCheckout);
+    }
+  };
 
   useEffect(() => {
     const fetchVisitors = async () => {
@@ -87,7 +101,10 @@ const Checkout = () => {
                 <td className="p-2">{visitor.purposeOfVisit}</td>
                 <td className="p-2">{visitor.arrivalTime}</td>
                 <td className="p-2">
-                  <button className="text-white p-2 bg-gray-600 rounded-md">
+                  <button
+                    onClick={() => handleCheckout()}
+                    className="text-white p-2 bg-gray-600 rounded-md"
+                  >
                     Check out
                   </button>
                 </td>

@@ -6,8 +6,8 @@ export async function saveVisitors(visitor) {
     method: "POST",
     body: JSON.stringify(visitor),
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   });
 
   const response = await visitorResponse.json();
@@ -18,7 +18,21 @@ export async function saveVisitors(visitor) {
 export async function getVisitors(queryParams) {
   const visitorResponse = await fetch(`${BASE_URL}/visitors`, {
     method: "GET",
-  })
+  });
+
+  const response = await visitorResponse.json();
+  return response;
+}
+
+// Update visitor's departure time endpoint integration
+export async function updateVisitor(visitorId, updatedData) {
+  const visitorResponse = await fetch(`${BASE_URL}/visitors/${visitorId}`, {
+    method: "PATCH",
+    body: JSON.stringify(updatedData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   const response = await visitorResponse.json();
   return response;

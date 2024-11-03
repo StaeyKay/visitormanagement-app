@@ -8,22 +8,25 @@ import {
   UsersRound,
 } from "lucide-react";
 import { FaSearch } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast"
+
 
 const Checkout = () => {
-  const urlParams = useParams();
 
-  const visitorId = urlParams.visitorId;
-  const updateDepartureTime = Boolean(visitorId);
+  const { toast } = useToast()
 
   const [visitorList, setVisitorList] = useState([]);
-  const [departureTime, setDepartureTime] = useState();
 
-  const handleCheckout = async (e) => {
-    if (updateDepartureTime) {
-      const updatedCheckout = await updateVisitor(visitorId);
-      setDepartureTime(updatedCheckout);
-    }
+  const handleCheckout = async (visitorId) => {    
+    const updatedCheckout = await updateVisitor(visitorId);
+    console.log("updatedCheckout:", updatedCheckout)
+    const visitorList = await getVisitors();
+    setVisitorList(visitorList);
+    console.log("toast:", toast)
+    toast({
+      title: "Success!",
+      description: "Visitor has been checked out successfully",
+    })
   };
 
   useEffect(() => {
@@ -32,7 +35,7 @@ const Checkout = () => {
       setVisitorList(visitorList);
     };
     fetchVisitors();
-  }, [visitorList]);
+  }, []);
 
   return (
     <div>
@@ -102,10 +105,10 @@ const Checkout = () => {
                 <td className="p-2">{visitor.arrivalTime}</td>
                 <td className="p-2">
                   <button
-                    onClick={() => handleCheckout()}
+                    onClick={(e) => handleCheckout(visitor.id)}
                     className="text-white p-2 bg-gray-600 rounded-md"
                   >
-                    Check out
+                    {visitor.departureTime ? visitor.departureTime : "Check out"}
                   </button>
                 </td>
               </tr>

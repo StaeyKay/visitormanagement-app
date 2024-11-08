@@ -37,3 +37,16 @@ export async function updateVisitor(visitorId, updatedData) {
   const response = await visitorResponse.json();
   return response;
 }
+
+// Utility function to filter visitors
+export async function filterVisitors(filter) {
+  const visitorResponse = await fetch(
+    `${BASE_URL}/visitors?filter=${JSON.stringify({ visitorName: filter })}`,
+    {
+      method: "GET",
+    }
+  );
+
+  const response = await visitorResponse.json();
+  return response;
+}

@@ -1,4 +1,4 @@
-import { getVisitors, updateVisitor } from "@/utils";
+import { filterVisitors, getVisitors, updateVisitor } from "@/utils";
 import React, { useState, useEffect } from "react";
 import {
   AlarmClock,
@@ -7,26 +7,29 @@ import {
   UserRound,
   UsersRound,
 } from "lucide-react";
-import { FaSearch } from "react-icons/fa";
-import { useToast } from "@/hooks/use-toast"
-
+import { useToast } from "@/hooks/use-toast";
 
 const Checkout = () => {
-
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   const [visitorList, setVisitorList] = useState([]);
+  const [input, setInput] = useState("");
 
-  const handleCheckout = async (visitorId) => {    
+  const handleCheckout = async (visitorId) => {
     const updatedCheckout = await updateVisitor(visitorId);
-    console.log("updatedCheckout:", updatedCheckout)
+    console.log("updatedCheckout:", updatedCheckout);
     const visitorList = await getVisitors();
     setVisitorList(visitorList);
-    console.log("toast:", toast)
+    console.log("toast:", toast);
     toast({
       title: "Success!",
       description: "Visitor has been checked out successfully",
-    })
+    });
+  };
+
+  const handleSearch = async (value) => {
+    const filteredData = await filterVisitors(value);
+    setVisitorList(filteredData);
   };
 
   useEffect(() => {
@@ -40,17 +43,20 @@ const Checkout = () => {
   return (
     <div>
       {/* Search Input */}
-      <div className="flex space-x-2 justify-end p-5">
-        <form action="">
-          <input
-            type="text"
-            className="shadow-md border-none rounded-full px-4 py-1 outline-none w-full md:w-auto"
-            placeholder="Search..."
-          />
-        </form>
-        <div className="bg-black p-3 rounded-full">
-          <FaSearch className="text-white" />
-        </div>
+      <div className="flex justify-end p-5">
+        <input
+          type="text"
+          placeholder="Search..."
+          className="border border-gray-300 rounded-l-full p-2"
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
+        />
+        <button
+          className="bg-[#E62E2D] p-2 text-white rounded-r-full hover:bg-[#DFA2A2]"
+          onClick={() => handleSearch(input)}
+        >
+          Search
+        </button>
       </div>
       <table className="w-full text-center">
         <thead>
@@ -106,9 +112,11 @@ const Checkout = () => {
                 <td className="p-2">
                   <button
                     onClick={(e) => handleCheckout(visitor.id)}
-                    className="text-white p-2 bg-gray-600 rounded-md"
+                    className="text-white p-2 bg-[#E62E2D] rounded-md hover:bg-[#DFA2A2]"
                   >
-                    {visitor.departureTime ? visitor.departureTime : "Check out"}
+                    {visitor.departureTime
+                      ? visitor.departureTime
+                      : "Check out"}
                   </button>
                 </td>
               </tr>

@@ -16,15 +16,21 @@ const Checkout = () => {
   const [input, setInput] = useState("");
 
   const handleCheckout = async (visitorId) => {
-    const updatedCheckout = await updateVisitor(visitorId);
-    console.log("updatedCheckout:", updatedCheckout);
-    const visitorList = await getVisitors();
-    setVisitorList(visitorList);
-    console.log("toast:", toast);
-    toast({
-      title: "Success!",
-      description: "Visitor has been checked out successfully",
-    });
+    try {
+      const updatedCheckout = await updateVisitor(visitorId);
+      const visitorList = await getVisitors();
+      setVisitorList(visitorList);
+      toast({
+        title: "Success!",
+        description: "Visitor has been checked out successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to check out visitor",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSearch = async (value) => {
@@ -39,6 +45,18 @@ const Checkout = () => {
     };
     fetchVisitors();
   }, []);
+
+  const formatDate = (dateString) => {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "numeric",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    }).format(new Date(dateString));
+  };
 
   return (
     <div>
@@ -108,16 +126,18 @@ const Checkout = () => {
                 <td className="p-2">{visitor.employeeName}</td>
                 <td className="p-2">{visitor.phoneNumber}</td>
                 <td className="p-2">{visitor.purposeOfVisit}</td>
-                <td className="p-2">{visitor.arrivalTime}</td>
+                <td className="p-2">{formatDate(visitor.arrivalTime)}</td>
                 <td className="p-2">
-                  <button
-                    onClick={(e) => handleCheckout(visitor.id)}
-                    className="text-white p-2 bg-[#E62E2D] rounded-md hover:bg-[#DFA2A2]"
-                  >
-                    {visitor.departureTime
-                      ? visitor.departureTime
-                      : "Check out"}
-                  </button>
+                  {visitor.departureTime ? (
+                    <span>{formatDate(visitor.departureTime)}</span>
+                  ) : (
+                    <button
+                      onClick={() => handleCheckout(visitor.id)}
+                      className="text-white p-2 bg-[#E62E2D] rounded-md hover:bg-[#DFA2A2]"
+                    >
+                      Check out
+                    </button>
+                  )}
                 </td>
               </tr>
             );

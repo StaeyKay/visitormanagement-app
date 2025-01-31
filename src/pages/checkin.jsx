@@ -44,25 +44,36 @@ const Checkin = () => {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="min-h-screen space-y-10">
       <h1 className="bg-[#E62E2D] text-center text-white py-4 font-bold text-[40px]">
         Welcome to Graphic Communications Group Limited
       </h1>
-      <div className="px-60 py-10">
-        <div className="bg-[#dfa2a2] py-10 px-20 rounded-md space-y-4">
-          <h4>Check-In Form</h4>
-          <p className="text-white">Please fill in the form below</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900">Visitor Check-In</h1>
+          <p className="mt-2 text-gray-600">
+            Please fill in your details below
+          </p>
+        </div>
+        <div className=" mt-8">
+          {/* <h4>Check-In Form</h4>
+          <p className="mt-2 text-gray-600">
+            Please fill in your details below
+          </p> */}
           <form
             onSubmit={handleForm}
             action=""
-            className="grid grid-cols-2 gap-5 items-start"
+            className="space-y-6 max-w-md mx-auto p-6 bg-white rounded-lg shadow-sm animate-fadeIn"
           >
-            <div className="flex flex-col">
-              <label htmlFor="" className="text-white">
+            <div>
+              <label
+                htmlFor=""
+                className="block text-sm font-medium text-gray-700"
+              >
                 Your full name
               </label>
               <input
-                className="rounded-md h-8 p-2"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#E62E2D] focus:outline-none focus:ring-1 focus:ring-[#E62E2D]"
                 type="text"
                 placeholder="Full Name"
                 onChange={(e) => setVisitorName(e.target.value)}
@@ -70,12 +81,15 @@ const Checkin = () => {
                 required
               />
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="" className="text-white">
+            <div>
+              <label
+                htmlFor=""
+                className="block text-sm font-medium text-gray-700"
+              >
                 Your phone number
               </label>
               <input
-                className="rounded-md h-8 p-2"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#E62E2D] focus:outline-none focus:ring-1 focus:ring-[#E62E2D]"
                 type="text"
                 placeholder="Enter your phone number"
                 onChange={(e) => setPhone(e.target.value)}
@@ -83,12 +97,15 @@ const Checkin = () => {
                 required
               />
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="" className="text-white">
-                Host:
+            <div>
+              <label
+                htmlFor=""
+                className="block text-sm font-medium text-gray-700"
+              >
+                Host
               </label>
               <input
-                className="rounded-md h-8 p-2"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#E62E2D] focus:outline-none focus:ring-1 focus:ring-[#E62E2D]"
                 type="text"
                 placeholder="Full Name"
                 onChange={(e) => setEmployeeName(e.target.value)}
@@ -96,19 +113,22 @@ const Checkin = () => {
                 required
               />
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="" className="text-white">
+            <div>
+              <label
+                htmlFor=""
+                className="block text-sm font-medium text-gray-700"
+              >
                 Purpose of visit
               </label>
-              <input
-                className="rounded-md h-8 p-2"
-                type="text"
+              <textarea
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#E62E2D] focus:outline-none focus:ring-1 focus:ring-[#E62E2D]"
+                rows={3}
                 placeholder="Purpose"
                 onChange={(e) => setPurpose(e.target.value)}
                 value={purpose}
               />
             </div>
-            <button className="bg-[#f1d5da] w-[100px] rounded-md">
+            <button className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#E62E2D] hover:bg-[#E62E2D]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
               Check In
             </button>
           </form>

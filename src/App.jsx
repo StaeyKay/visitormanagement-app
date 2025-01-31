@@ -1,16 +1,28 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Welcome from "./pages/welcome";
 import Checkin from "./pages/checkin";
 import Checkout from "./pages/checkout";
+import Navbar from "./components/ui/navbar";
 
-const App = () => {
-  const router = createBrowserRouter([
-    { path: "/", element: <Welcome /> },
-    { path: "checkin", element: <Checkin /> },
-    { path: "checkout", element: <Checkout /> },
-  ]);
-  return <RouterProvider router={router} />;
-};
+const App = () => (
+  <BrowserRouter>
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<Welcome />} />
+          <Route path="checkin" element={<Checkin />} />
+          <Route path="checkout" element={<Checkout />} />
+          {/* <Route path="dashboard" element={<Dashboard />} /> */}
+        </Routes>
+      </main>
+    </div>
+  </BrowserRouter>
+);
 
 export default App;
+
+// { path: "/", element: <Welcome /> },
+// { path: "checkin", element: <Checkin /> },
+// { path: "checkout", element: <Checkout /> },

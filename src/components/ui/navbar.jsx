@@ -15,19 +15,19 @@ const Navbar = () => {
           <div className="flex space-x-4">
             <Link
               to="checkin"
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#E62E2D]"
             >
               Check In
             </Link>
             <Link
               to="checkout"
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#E62E2D]"
             >
               Check Out
             </Link>
             <Link
               to="/dashboard"
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#E62E2D]"
             >
               Dashboard
             </Link>

@@ -14,10 +14,12 @@ const Checkout = () => {
 
   const [visitorList, setVisitorList] = useState([]);
   const [input, setInput] = useState("");
+  const [dailyCount, setDailyCount] = useState(0);
+  const [monthlyCount, setMonthlyCount] = useState(0);
 
   const handleCheckout = async (visitorId) => {
     try {
-      const updatedCheckout = await updateVisitor(visitorId);
+      await updateVisitor(visitorId);
       const visitorList = await getVisitors();
       setVisitorList(visitorList);
       toast({
@@ -38,10 +40,21 @@ const Checkout = () => {
     setVisitorList(filteredData);
   };
 
+  const formatTimeSpent = (minutes) => {
+    if (minutes === null || minutes === undefined) return "0.00"; // Default if missing data
+
+    const hours = Math.floor(minutes / 60); // Get whole hours
+    const mins = minutes % 60; // Get remaining minutes
+
+    return `${hours}.${mins < 10 ? "0" : ""}${mins}`; // Ensures 1.05 instead of 1.5
+  };
+
   useEffect(() => {
     const fetchVisitors = async () => {
-      const visitorList = await getVisitors();
-      setVisitorList(visitorList);
+      const visitorLists = await getVisitors();
+      setVisitorList(visitorLists.visitors);
+      setDailyCount(visitorLists.dailyCount);
+      setMonthlyCount(visitorLists.monthlyCount);
     };
     fetchVisitors();
   }, []);
@@ -76,6 +89,17 @@ const Checkout = () => {
           Search
         </button>
       </div>
+      <div className="flex justify-between p-5">
+        <div className="bg-blue-200 p-4 rounded-lg">
+          <h2 className="text-lg font-semibold">Visitors Today:</h2>
+          <p className="text-xl font-bold">{dailyCount}</p>
+        </div>
+        <div className="bg-green-200 p-4 rounded-lg">
+          <h2 className="text-lg font-semibold">Visitors This Month:</h2>
+          <p className="text-xl font-bold">{monthlyCount}</p>
+        </div>
+      </div>
+
       <table className="w-full text-center">
         <thead>
           <tr className="border-b-2">
@@ -116,6 +140,12 @@ const Checkout = () => {
                 Check out
               </div>
             </th>
+            <th className="text-center p-2">
+              <div className="flex gap-1 justify-center">
+                <AlarmClock />
+                Time Spent (mins)
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -138,6 +168,11 @@ const Checkout = () => {
                       Check out
                     </button>
                   )}
+                </td>
+                <td className="p-2">
+                  {visitor.totalTimeSpent !== null
+                    ? `${formatTimeSpent(visitor.totalTimeSpent)} hrs`
+                    : "Still Checked In"}
                 </td>
               </tr>
             );

@@ -26,6 +26,18 @@ const Navbar = () => {
               Check Out
             </Link>
             <Link
+              to="keyPickup"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#E62E2D]"
+            >
+              Key PickUp
+            </Link>
+            <Link
+              to="keyDeposit"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#E62E2D]"
+            >
+              Key Deposit
+            </Link>
+            <Link
               to="/dashboard"
               className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#E62E2D]"
             >

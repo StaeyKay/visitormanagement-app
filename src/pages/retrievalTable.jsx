@@ -1,4 +1,4 @@
-import { filterVisitors, getVisitors, updateVisitor } from "@/utils";
+import { filterVisitors, getEmployees, getVisitors } from "@/utils";
 import React, { useState, useEffect, useRef } from "react";
 import { DownloadTableExcel } from "react-export-table-to-excel";
 import {
@@ -10,41 +10,19 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const Checkout = () => {
+const RetrievalTable = () => {
   const { toast } = useToast();
 
   const tableRef = useRef(null);
 
-  const [visitorList, setVisitorList] = useState([]);
+  const [employeeList, setEmployeeList] = useState([]);
   const [input, setInput] = useState("");
   const [dailyCount, setDailyCount] = useState(0);
   const [monthlyCount, setMonthlyCount] = useState(0);
 
-  const handleCheckout = async (visitorId) => {
-    try {
-      if (!visitorId) {
-        console.error("Error: visitorId is undefined");
-        return;
-      }
-      await updateVisitor(visitorId);
-      const visitorList = await getVisitors();
-      setVisitorList(visitorList.visitors);
-      toast({
-        title: "Success!",
-        description: "Visitor has been checked out successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to check out visitor",
-        variant: "destructive",
-      });
-    }
-  };
-
   const handleSearch = async (value) => {
     const filteredData = await filterVisitors(value);
-    setVisitorList(filteredData);
+    setEmployeeList(filteredData);
   };
 
   const formatTimeSpent = (minutes) => {
@@ -57,13 +35,13 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    const fetchVisitors = async () => {
-      const visitorLists = await getVisitors();
-      setVisitorList(visitorLists.visitors);
-      setDailyCount(visitorLists.dailyCount);
-      setMonthlyCount(visitorLists.monthlyCount);
+    const fetchEmployees = async () => {
+      const employeeLists = await getEmployees();
+      setEmployeeList(employeeLists);
+    //   setDailyCount(employeeLists.dailyCount);
+    //   setMonthlyCount(employeeLists.monthlyCount);
     };
-    fetchVisitors();
+    fetchEmployees();
   }, []);
 
   const formatDate = (dateString) => {
@@ -81,8 +59,8 @@ const Checkout = () => {
   return (
     <div>
       <DownloadTableExcel
-        filename="visitors table"
-        sheet="visitors"
+        filename="key retrieval table"
+        sheet="key retrieval"
         currentTableRef={tableRef.current}
       >
         <button> Export excel </button>
@@ -120,13 +98,7 @@ const Checkout = () => {
             <th className="p-2">
               <div className="flex gap-1 justify-center">
                 <UserRound />
-                Visitor
-              </div>
-            </th>
-            <th className="text-center p-2">
-              <div className="flex gap-1 justify-center">
-                <UsersRound />
-                Host
+                Full Name
               </div>
             </th>
             <th className="text-center p-2">
@@ -136,58 +108,35 @@ const Checkout = () => {
               </div>
             </th>
             <th className="text-center p-2">
+              <div className="flex gap-1 justify-center">
+                <UsersRound />
+                Department
+              </div>
+            </th>
+            <th className="text-center p-2">
               <div className="flex gap-1">
                 <CalendarArrowUp />
-                Purpose
+                Key Number
               </div>
             </th>
             {/* <th className="text-center p-2">Date</th> */}
             <th className="text-center p-2">
               <div className="flex gap-1 justify-center">
                 <AlarmClock />
-                Check in
-              </div>
-            </th>
-            <th className="text-center p-2">
-              <div className="flex gap-1 justify-center">
-                <AlarmClock />
-                Check out
-              </div>
-            </th>
-            <th className="text-center p-2">
-              <div className="flex gap-1 justify-center">
-                <AlarmClock />
-                Time Spent (mins)
+                Time
               </div>
             </th>
           </tr>
         </thead>
         <tbody>
-          {visitorList.map((visitor, index) => {
+          {employeeList.map((employee, index) => {
             return (
               <tr key={index}>
-                <td className="p-2">{visitor.visitorName}</td>
-                <td className="p-2">{visitor.employeeName}</td>
-                <td className="p-2">{visitor.phoneNumber}</td>
-                <td className="p-2">{visitor.purposeOfVisit}</td>
-                <td className="p-2">{formatDate(visitor.arrivalTime)}</td>
-                <td className="p-2">
-                  {visitor.departureTime ? (
-                    <span>{formatDate(visitor.departureTime)}</span>
-                  ) : (
-                    <button
-                      onClick={() => handleCheckout(visitor._id)}
-                      className="text-white p-2 bg-[#E62E2D] rounded-md hover:bg-[#DFA2A2]"
-                    >
-                      Check out
-                    </button>
-                  )}
-                </td>
-                <td className="p-2">
-                  {visitor.totalTimeSpent !== null
-                    ? `${formatTimeSpent(visitor.totalTimeSpent)} hrs`
-                    : "Still Checked In"}
-                </td>
+                <td className="p-2">{employee.fullName}</td>
+                <td className="p-2">{employee.phoneNumber}</td>
+                <td className="p-2">{employee.department}</td>
+                <td className="p-2">{employee.keyNumber}</td>
+                <td className="p-2">{formatDate(employee.time)}</td>
               </tr>
             );
           })}
@@ -197,4 +146,4 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+export default RetrievalTable;
